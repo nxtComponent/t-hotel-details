@@ -352,22 +352,22 @@ Example:
 
       _isWithin5Kms(attraction) {
         const distanceString = attraction.description.split(' ')[1];
-        const distance = parseInt(distanceString.replace('--',''));
-        return distance <= 5;
-      }
+          const distance = parseInt(distanceString.replace('--',''));
+          return distance <= 5;
+        }
 
-      _getRoomsArray(count){
-        return new Array(count);
-      }
+        _getRoomsArray(count){
+          return new Array(count);
+        }
 
-      _incrementByOne(index){
-        return index + 1;
-      }
+        _incrementByOne(index){
+          return index + 1;
+        }
 
-      _scrollToCheckout(){
-        this.$.map._showThumbnail = true;
-        this.$.checkout.scrollIntoView();
-      }
+        _scrollToCheckout(){
+          this.$.map._showThumbnail = true;
+          this.$.checkout.scrollIntoView();
+        }
 
       _scrollToSearch(){
         this.root.querySelector('.search-container').scrollIntoView();
