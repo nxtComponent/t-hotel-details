@@ -1,3 +1,4 @@
+<link rel="import" href="../paper-button/paper-button.html">
 <!--
 A comment describing this element
 
@@ -34,6 +35,7 @@ Example:
 				color: var(--shade-dark);
 			}
 			a{
+        cursor: pointer;
 				text-decoration: none;
 				color: var(--link-color);
 				line-height: 30px;
@@ -42,7 +44,7 @@ Example:
 		</style>
 		<div class="row-md body">
 			<h4>[[resources.heading]]</h4>
-			<a href="#" role="button" on-click="_triggerResearch">[[resources.description]]</a>
+			<a role="button" on-click="_triggerResearch">[[resources.description]]</a>
 		</div>
 		
 	</template>
@@ -58,10 +60,10 @@ Example:
 
             }
         }
-        _triggerResearch(e){
-        	e.preventDefault();
 
-        	this.dispatchEvent(new CustomEvent('research-clicked'));
+        _triggerResearch(e){
+          debugger;
+        	this.dispatchEvent(new CustomEvent('research-tap'));
         }
     };
 

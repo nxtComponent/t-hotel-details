@@ -3,16 +3,17 @@
 <link rel="import" href="trust-you.html">
 <link rel="import" href="hotel-room.html">
 <link rel="import" href="room-list.html">
-<link rel="import" href="../paper-tabs/paper-tabs.html">
-<link rel="import" href="../paper-tabs/paper-tab.html">
 <link rel="import" href="popular-amenities.html">
 <link rel="import" href="about-the-hotel.html">
 <link rel="import" href="total-price-container.html">
 <link rel="import" href="hotel-details-research.html">
 
 <link rel="import" href="../t-hotel-map/t-hotel-map.html">
+<link rel="import" href="../neon-animation/web-animations.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../iron-collapse/iron-collapse.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../paper-tabs/paper-tab.html">
 <!--
 A comment describing this element
 
@@ -247,7 +248,7 @@ Example:
                     slot="overview"
                     is-light-header
                     resources="[[resources.overview]]"
-                    hotel="[[_getMapHeader(overview)]]"
+                    hotel="[[overview]]"
                     on-reserve-tap="_scrollToCheckout"
                     >
                   </hotel-overview>
@@ -270,11 +271,11 @@ Example:
 
       <div class="vertical-divider not-mobile"></div>
       <div class="search-container">
-        <slot name="search-widget"></slot>
+        <slot id="search" name="search-widget"></slot>
       </div>
 
       <template is="dom-repeat" items="[[_getRoomsArray(rooms.count)]]" as="type">
-        <room-list on-room-selection="_updatePrice" nights="[[rooms.nights]]" selected="{{index}}" count="[[rooms.count]]" resources="[[resources.rooms]]" index="[[_incrementByOne(index)]]" room-types="[[rooms.list]]" amenities="[[details.amenities]]"></room-list>
+        <room-list on-room-selection="_updatePrice" nights="[[rooms.nights]]" opened="[[_openedIfFirstItem(index)]]" count="[[rooms.count]]" resources="[[resources.rooms]]" index="[[_incrementByOne(index)]]" room-types="[[rooms.list]]" amenities="[[details.amenities]]"></room-list>
       </template>
 
       <total-price-container id="checkout" amount="[[_calculatedCost]]" resources="[[resources.details]]"></total-price-container>
@@ -286,7 +287,7 @@ Example:
         <paper-tab>[[resources.details.aboutHotel]]</paper-tab>
         <paper-tab>[[resources.details.guestReviews]]</paper-tab>
       </paper-tabs>
-      <iron-pages selected="{{_selectedTab}}">
+      <iron-pages selected="[[_selectedTab]]">
         <section>
           <about-the-hotel
             id="about"
@@ -306,7 +307,7 @@ Example:
       </iron-pages>
 
       <hotel-details-research
-        resources="[[resources.details.help]]"></hotel-details-research>
+        resources="[[resources.details.help]]" on-research-tap ="_scrollToSearch"></hotel-details-research>
       <!-- <hotel-details-info class="oldInfo"></hotel-details-info>
 
       <hotel-details-info id="text"></hotel-details-info>
@@ -345,56 +346,64 @@ Example:
         }
       }
 
+      _openedIfFirstItem(index){
+        return index === 0;
+      }
+
       _isWithin5Kms(attraction) {
         const distanceString = attraction.description.split(' ')[1];
-          const distance = parseInt(distanceString.replace('--',''));
-          return distance <= 5;
+        const distance = parseInt(distanceString.replace('--',''));
+        return distance <= 5;
+      }
+
+      _getRoomsArray(count){
+        return new Array(count);
+      }
+
+      _incrementByOne(index){
+        return index + 1;
+      }
+
+      _scrollToCheckout(){
+        this.$.map._showThumbnail = true;
+        this.$.checkout.scrollIntoView();
+      }
+
+      _scrollToSearch(){
+        this.root.querySelector('.search-container').scrollIntoView();
+      }
+
+
+      _scrollToMainDescription(){
+        this.$.about.expandedDescription = true;
+        this.$.about.scrollIntoView();
+      }
+
+      _showMapView(){
+        this.$.map._showOverlay();
+      }
+
+      _updatePrice(e){
+        const { room, amount } = e.detail;
+        if(!this._pricesArray){
+          this._pricesArray = new Array(this.count);
         }
+        this._pricesArray[room] = amount;
+        this._calculatedCost =  this._pricesArray.reduce((sum, price) => {
+          sum = sum + price;
+          return sum;
+        },0);
+      }
 
-        _getRoomsArray(count){
-          return new Array(count);
-        }
+      _getMapHeader(overview){
+        return {
+          name: 'THE WESTIN LAKE LAS VEGAS RESORT SPA',
+          address: '101 MONTELAGO BOULEVARD  HENDERSON',
+          rating: 5
+        };
+      }
+    };
 
-        _incrementByOne(index){
-          return index + 1;
-        }
-
-        _scrollToCheckout(){
-          this.$.map._showThumbnail = true;
-          this.$.checkout.scrollIntoView();
-        }
-
-        _scrollToMainDescription(){
-          this.$.about.expandedDescription = true;
-          this.$.about.scrollIntoView();
-        }
-
-        _showMapView(){
-          this.$.map._showThumbnail = false;
-        }
-
-        _updatePrice(e){
-          const { room, amount } = e.detail;
-          if(!this._pricesArray){
-            this._pricesArray = new Array(this.count);
-          }
-          this._pricesArray[room] = amount;
-          this._calculatedCost =  this._pricesArray.reduce((sum, price) => {
-            sum = sum + price;
-            return sum;
-          },0);
-        }
-
-        _getMapHeader(overview){
-          return {
-            name: 'THE WESTIN LAKE LAS VEGAS RESORT SPA',
-            address: '101 MONTELAGO BOULEVARD  HENDERSON',
-            rating: 5
-          };
-        }
-
-      };
-
-      window.customElements.define(THotelDetails.is, THotelDetails);
+window.customElements.define(THotelDetails.is, THotelDetails);
   </script>
 </dom-module>

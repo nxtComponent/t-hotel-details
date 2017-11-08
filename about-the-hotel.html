@@ -1,3 +1,4 @@
+<link rel="import" href="../paper-button/paper-button.html">
 <!--
 A comment describing this element
 
@@ -32,6 +33,15 @@ Example:
         };
         margin-bottom: 5px;
       }
+      paper-button.link {
+				color: var(--paper-blue-900);
+				--paper-button-ink-color: var(--paper-blue-900);
+				text-transform: capitalize;
+				padding-left: 0;
+				margin-left: 0;
+			}
+
+
       .card-item{
         width: 40px;
         height: auto;
@@ -89,9 +99,9 @@ Example:
       </div>
     </div>
     <div class="bottom-container flex row-md flex-align-start-md">
-      <template is="dom-repeat" items="[[amenities]]">
+      <template is="dom-repeat" items="[[_getCategories(amenities)]]">
         <div class="margin-b item">
-          <hotel-details-info heading="[[item.type]]" class="popular-things" list-items="[[item.offerings]]"></hotel-details-info>
+          <hotel-details-info heading="[[item]]" class="popular-things" list-items="[[_getOfferingsInCategory(amenities, item)]]"></hotel-details-info>
         </div>
       </template>
       <div class="margin-b item">
@@ -119,7 +129,7 @@ Example:
           </div>
         </hotel-details-info>
       </div>
-    </div>
+      </div>
   </template>
   <script>
     class AboutTheHotel extends Polymer.Element{
@@ -140,6 +150,25 @@ Example:
           cardsSupported:Array
         }
       }
+
+      _getOfferingsInCategory(items, category){
+        return items.reduce((offerings, item) => {
+          if(item.category ===  category){
+            offerings.push(item.name);
+          }
+          return offerings;
+        }, []);
+      }
+
+      _getCategories(items){
+        var categories = new Set();
+        items.forEach(item => {
+          if(item.category)
+            categories.add(item.category);
+        });
+        return Array.from(categories);
+      }
+
     };
 
 window.customElements.define(AboutTheHotel.is, AboutTheHotel);

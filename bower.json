@@ -11,7 +11,6 @@
     "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
     "paper-item": "PolymerElements/paper-item#^2.0.0",
     "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
-    "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
     "t-hotel-map": "nxtComponent/t-map",
     "t-image-corousel": "nxtComponent/t-image-gallery",
     "iron-pages": "PolymerElements/iron-pages#^2.0.0",
@@ -19,10 +18,11 @@
     "gold-cc-input": "PolymerElements/gold-cc-input#^2.0.0",
     "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",
     "t-search": "nxtComponent/t-hotel-search",
-    "web-animations-js": "web-animations/web-animations-js#^2.2",
+    "web-animations-js": "^2.3.1",
     "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#^2.1.0",
     "paper-spinner": "PolymerElements/paper-spinner#^2.0.0",
-    "paper-input-place": "mlisook/paper-input-place#^1.9.5"
+    "paper-input-place": "mlisook/paper-input-place#^1.9.5",
+    "paper-tabs": "PolymerElements/paper-tabs#^2.0.0"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",

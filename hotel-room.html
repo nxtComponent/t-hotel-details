@@ -30,6 +30,11 @@ Example:
 				;
 			}
 
+      .orange{
+        align-items: right;
+    padding-top: 10px;
+      }
+
 			.policy-dialog{
 				max-width: 800px;
 			}
@@ -329,7 +334,7 @@ font-size: 12px;
 
 		<div class="main-container box-shadow room-grid">
 			<div class="hotel-details-container first">
-				<h3>[[room.desc]]</h3>
+				<h3>[[room.name]]</h3>
 				<dl>
 					<dd>[[_getString(room.bedDetails, ' | ', 'desc')]]</dd>
 					<dd>[[_getString(room.roomViews, ' | ')]]</dd>
@@ -376,9 +381,11 @@ font-size: 12px;
 								</paper-menu-button>
 							</div>
 							<p class="avg-night-info">[[resources.averageNightFare]]</p>
-							<p hidden$="[[!isPrepaid]]" class="extra-discount-info"><span class="tags ">[[resources.isPrepaid]]</span></p>
+							<p hidden$="[[!room.roomRate.isPrepaid]]" class="extra-discount-info"><span class="tags ">[[resources.isPrepaid]]</span></p>
 							<p hidden$="[[!room.hasFreeCancellation]]" class="extra-discount-info"><span class="tags ">[[resources.freeCancellation]]</span></p>
-							<paper-spinner-lite active="[[_showCancellationLoader(room.hasFreeCancellation)]]" class="orange"></paper-spinner-lite>
+              <div class="orange">
+							<paper-spinner-lite active="[[_showCancellationLoader(room.hasFreeCancellation)]]" ></paper-spinner-lite>
+              </div>
 						</div>
 						<div class="right-container text-right">
 							<h4 class="final-price">
@@ -395,12 +402,15 @@ font-size: 12px;
 				<template is="dom-if" if="[[room.roomRate.cancellationPolicy]]">
 					<hotel-details-info class="avg-daily-info" no-heading id="text" text-content="[[room.roomRate.cancellationPolicy.text]]" collapse-length="150"></hotel-details-info>
 				</template>
+<template is="dom-if" if="[[room.roomRate.additionalCharges]]">
+					<hotel-details-info class="avg-daily-info" no-heading id="text" text-content="[[room.roomRate.additionalCharges.0]]" collapse-length="150"></hotel-details-info>
+				</template>
 				<template is="dom-if" if="[[room.roomRate.policies.length]]">
 					<paper-button class="link" on-click="_togglePolicyDialog">[[resources.roomPolicy]]</paper-button>
 				</template>
 			</div>
 			<div class="not-mobile text-center second">
-				<star-rating class="margin-b" icon="accessibility" rating="[[count]]" hide-unselected></star-rating>
+				<star-rating class="margin-b" icon="accessibility" rating="[[room.adultOccupancy]]" hide-unselected></star-rating>
 				<p class="guest-count">
 					[[room.adultOccupancy]] [[resources.guests]]
 				</p>
@@ -454,10 +464,12 @@ font-size: 12px;
 							<span hidden$="[[selected]]">[[resources.select]]</span>
 							<span hidden$="[[!selected]]">[[resources.selected]]</span>
 						</paper-button>
-						<p class="extra-discount-info" hidden$="[[!isPrepaid]]"><span class="tags"> [[resources.isPrepaid]]</span></p>
+						<p class="extra-discount-info" hidden$="[[!room.roomRate.isPrepaid]]"><span class="tags"> [[resources.isPrepaid]]</span></p>
 						<!-- <p class="extra&#45;discount&#45;info" hidden$="[[_hideIfPenaltyExists(room.roomRate.cancellationPolicy)]]"><span class="tags">[[resources.freeCancellation]]</span></p> -->
 						<p hidden$="[[!room.hasFreeCancellation]]" class="extra-discount-info"><span class="tags ">[[resources.freeCancellation]]</span></p>
-						<paper-spinner-lite active="[[_showCancellationLoader(room.hasFreeCancellation)]]" class="orange"></paper-spinner-lite>
+              <div class="orange">
+						<paper-spinner-lite active="[[_showCancellationLoader(room.hasFreeCancellation)]]" ></paper-spinner-lite>
+              </div>
 					</div>
 				</div>
 			</div>

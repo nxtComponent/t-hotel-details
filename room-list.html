@@ -166,7 +166,7 @@ Example:
             <h5>[[resources.total]]</h5>
           </div>
         </div>
-        <template is="dom-repeat" items="[[roomTypes]]">
+        <template is="dom-repeat" items="[[roomTypes]]" sort="_sortBy">
           <hotel-room selected="[[_isSelected(index, selected)]]" on-selection-change="_selectionChanged" amenities="[[amenities]]" resources="[[resources]]" room="[[item]]"></hotel-room>
         </template>
         <!-- <a href="#" class="link&#45;style show&#45;more&#45;rooms row" role="button">SHOW MORE ROOMS</a> -->
@@ -242,6 +242,12 @@ Example:
 
       _getLabel(opened){
         return opened? this.resources.close: this.resources.change;
+      }
+
+      _sortBy(room1, room2){
+        const room1Cost = room1.roomRate.fare.totalFare - room1.roomRate.fare.totalDiscount;
+        const room2Cost = room2.roomRate.fare.totalFare - room2.roomRate.fare.totalDiscount;
+        return room1Cost > room2Cost;
       }
 
       _getTotalAmount(roomTypes, selected, nights){
