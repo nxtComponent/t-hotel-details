@@ -28,7 +28,7 @@
 				iron-icon {
 					width: 20px;
 					height: 20px;
-					color: var(--shade-semidark);
+					color: var(--shade-semidark, #b5b5b5);
 				}
 
 				a{
@@ -84,10 +84,10 @@
 				@media (min-width: 1024px){
 					h2{
 						font-size: 24px;
-						font-weight: 400;
+						font-weight: 500;
 					}
 					p, a, dl, dt:not(.resource-label), dd {
-						font-size: 16px;
+						font-size: 12px;
 					}
 				}
 
@@ -100,6 +100,14 @@
 					margin-left: 10px;
 				}
 
+  .paragraph-break{
+    max-width: 300px;
+  }
+@media (min-width: 1024px) {
+  .paragraph-break{
+    max-width: 500px;
+  }
+}
 				.icons-header paper-icon-button{
 					padding: 3px;
 					border-radius: 50%;
@@ -135,7 +143,7 @@
           <template is="dom-if" if="[[!isLightHeader]]">
 					<div class="icons-header row flex">
 						<paper-icon-button  active ="{{hotel.isFavorite}}" on-click="_fireFavoriteActionEvent" class="favorite" icon="[[resources.favorite]]" toggles></paper-icon-button>
-						<paper-menu-button  on-iron-select="_shareOnPlatform"  class="header-menu-button">
+						<paper-menu-button dynamic-align  on-iron-select="_shareOnPlatform"  class="header-menu-button">
 							<paper-icon-button icon="[[resources.share]]" slot="dropdown-trigger" alt="menu"></paper-icon-button>
 							<paper-listbox slot="dropdown-content">
 								<template is="dom-repeat" items="[[hotel.sharingPlatforms]]">
@@ -149,7 +157,7 @@
 					</div>
         </template>
 				</div>
-				<p class="margin-b">[[hotel.address]]</p>
+				<p class="paragraph-break margin-b">[[hotel.address]]</p>
         <div class="row">
           <template is="dom-if" if="[[!isLightHeader]]">
             <a href="tel:[[hotel.phone]]" class="row margin-r">

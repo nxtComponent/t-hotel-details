@@ -42,10 +42,10 @@ Example:
 
       .host {
         @apply(--layout-vertical);
-        padding: 20px;
+        padding: 16px;
         --paper-tabs-selection-bar-color: #1976d2;
         --paper-tab-content-unselected: {
-          color: var(--shade-semidark, #9f9f9f );
+          color: var(--shade-semidark, #b5b5b5 );
         };
         --paper-tab: {
           @apply --layout-flex-none;
@@ -78,7 +78,7 @@ Example:
 
       .extra-detail p {
         font-size: 16px;
-        color: var(--shade-semidark, rgba(0, 0, 0, 0.54));
+        color: var(--shade-semidark, rgba(0, 0, 0, 0.4));
       }
 
       .popular-Amenties {
@@ -101,7 +101,7 @@ Example:
         padding: 20px;
         --paper-tabs-selection-bar-color: #1976d2;
         --paper-tab-content-unselected: {
-          color: var(--shade-semidark, rgba(0, 0, 0, 0.54));
+          color: var(--shade-semidark, rgba(0, 0, 0, 0.4));
         };
         --paper-tab: {
           @apply --layout-flex-none;
@@ -133,7 +133,7 @@ Example:
 
       .extra-detail p {
         font-size: 16px;
-        color: var(--shade-semidark, rgba(0, 0, 0, 0.54));
+        color: var(--shade-semidark, rgba(0, 0, 0, 0.4));
       }
 
       .popular-Amenties {
@@ -203,6 +203,9 @@ Example:
       }
 
       @media (min-width: 1024px) {
+        .host{
+          padding: 20px;
+        }
         .carousel-container {
           height: 555px;
         }
