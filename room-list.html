@@ -45,6 +45,9 @@ Example:
         color: var(--shade-semidark);
         min-height: 50px;
       }
+      .toggle-header .selection{
+        color: #212121;
+      }
       .collapse-content{
         border: 1px solid var(--shade-superlight);
       }
@@ -84,6 +87,25 @@ Example:
         @apply --layout-center-justified;
         margin: 15px 0 0;
       }
+      @media (min-width: 320px){
+        .toggle-header{
+          font-size: 14px;
+          padding: 10px 16px;
+          min-height: 0;
+          line-height: 20px;
+        }
+        .price-row p{
+          font-size: 14px;
+          line-height: 20px;
+        }
+        .mobile-view{
+          margin-bottom: 10px;
+        }
+        .room-index{
+          display: inline-block;
+        }
+      }
+
       @media (min-width: 550px){
 
         .header {
@@ -125,7 +147,7 @@ Example:
       }
     </style>
 
-    <div class="toggle-header row-md">
+    <div class="toggle-header row-md" on-click="toggleCollapse">
       <template is="dom-if" if="[[!_isRoomSelected(selected)]]">
         <div class="flex selection" >
           <div class="room-index">[[resources.room]] [[index]]:</div>
@@ -143,7 +165,7 @@ Example:
           <p>[[resources.room]] [[index]] [[resources.total]]:</p>
           <h3 class="price">[[_getTotalAmount(roomTypes, selected, nights )]]</h3>
         </template>
-        <a href="#" class="link-style" on-click="toggleCollapse">[[resources.change]]</a>
+        <a href="#" class="not-mobile link-style" on-click="toggleCollapse">[[resources.change]]</a>
       </div>
     </div>
 

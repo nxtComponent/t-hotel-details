@@ -9,7 +9,6 @@
 <link rel="import" href="hotel-details-research.html">
 
 <link rel="import" href="../t-hotel-map/t-hotel-map.html">
-<link rel="import" href="../neon-animation/web-animations.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../iron-collapse/iron-collapse.html">
 <link rel="import" href="../paper-tabs/paper-tabs.html">
@@ -166,6 +165,11 @@ Example:
         margin-bottom: 5px;
       }
 
+      @media (min-width: 320px) {
+        #map{
+          min-height: 180px
+        }
+      }
       @media (min-width: 550px) {
         .carousel-container {
           height: 400px;
@@ -197,7 +201,7 @@ Example:
         .popular-Amenties {
           margin-bottom: 0;
         }
-        t-hotel-map{
+        #map{
           min-height: 180px;
         }
       }
@@ -262,7 +266,7 @@ Example:
         </div>
       </div>
       <div class="not-mobile row-md flex-align-start-md ">
-        <hotel-details-info class="hotel-description" heading="[[resources.details.description]]" collapse-length="528" text-content="[[details.descriptions.0.value]]" on-expand-content="_scrollToMainDescription"></hotel-details-info>
+        <hotel-details-info class="hotel-description" heading="[[resources.details.description]]" collapse-length="528" text-content="[[details.descriptions.0.value]]" ></hotel-details-info>
         <hotel-details-info class="popular-things-container" heading="[[resources.details.pointsOfInterest]]" class="popular-things" list-items="[[details.pointsOfInterest]]"></hotel-details-info>
       </div>
 
@@ -338,8 +342,7 @@ Example:
           _pricesArray: Array,
 
           _selectedTab:{
-            type: Number,
-            value: 0
+            type: Number
           },
 
           _calculatedCost: {
@@ -354,23 +357,23 @@ Example:
       }
 
       _isWithin5Kms(attraction) {
-        const distanceString = attraction.description.split(' ')[1];
-          const distance = parseInt(distanceString.replace('--',''));
-          return distance <= 5;
-        }
+        const distanceString = attraction.description.split('--')[1];
+        const distance = parseInt(distanceString.split(' ')[0]);
+        return distance <= 5;
+      }
 
-        _getRoomsArray(count){
-          return new Array(count);
-        }
+      _getRoomsArray(count){
+        return new Array(count);
+      }
 
-        _incrementByOne(index){
-          return index + 1;
-        }
+      _incrementByOne(index){
+        return index + 1;
+      }
 
-        _scrollToCheckout(){
-          this.$.map._showThumbnail = true;
-          this.$.checkout.scrollIntoView();
-        }
+      _scrollToCheckout(){
+        this.$.map._showThumbnail = true;
+        this.$.checkout.scrollIntoView();
+      }
 
       _scrollToSearch(){
         this.root.querySelector('.search-container').scrollIntoView();

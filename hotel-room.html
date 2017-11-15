@@ -30,10 +30,10 @@ Example:
 				;
 			}
 
-      .orange{
-        align-items: right;
-    padding-top: 10px;
-      }
+			.orange{
+				align-items: right;
+				padding-top: 10px;
+			}
 
 			.policy-dialog{
 				max-width: 800px;
@@ -173,14 +173,14 @@ Example:
 				font-size: 16px;
 				text-decoration: line-through;
 				color: var(--shade-semidark);
-				margin: 0 10px;
+				margin-left: 10px;
 			}
 
 			.dailybtn {
 				position: relative;
 				line-height: 32px;
 				height: 20px;
-padding: 0;
+				padding: 0;
 			}
 
 			#dailyRateButton {
@@ -217,6 +217,7 @@ padding: 0;
 			paper-button.link {
 				color: var(--paper-blue-900);
 				--paper-button-ink-color: var(--paper-blue-900);
+				font-size: 12px;
 				text-transform: capitalize;
 				padding-left: 0;
 				margin-left: 0;
@@ -289,17 +290,42 @@ padding: 0;
 				background-color: var(--link-color);
 			}
 
+			.mobile-view p{
+        line-height: 16px;
+			}
+      .mobile-view{
+        margin-bottom: 10px;
+      }
+
+			.mobile-view .dailyBtn{
+				height: inherit;
+			}
+			.mobile-view #dailyRateButton{
+				padding: 2px;
+				width: 30px;
+				height: 30px;
+			}
+
+			.mobile-view .avg-night-info, .avg-daily-info{
+				transform: none;
+margin-bottom: 10px;
+			}
+
+			.mobile-view h4.discounted{
+				font-size: 14px;
+			}
+
 			@media (min-width: 550px) {
 				.box-shadow {
 					@apply(--container-shadow);
 				}
 				.main-container > div {
 					border-right: 1px solid var(--shade-superlight);
-					padding: 24px;
+					padding: 16px;
 				}
 				.base-price-container {
 					@apply(--layout-end-justified);
-font-size: 12px;
+					font-size: 12px;
 				}
 				.avg-daily-info {
 					transform: none;
@@ -325,6 +351,7 @@ font-size: 12px;
 					padding: 2px;
 				}
 			}
+
 			@media (min-width: 1024px){
 				.image-container {
 					height: 120px;
@@ -352,12 +379,14 @@ font-size: 12px;
 					<p class="demand-info" hidden$="[[_isGreaterThanFive(room.availableRoomCount)]]">In demand - only [[room.availableRoomCount]] rooms left</p>
 					<p class="discount-info">
 						<span hidden$="[[!room.roomRate.offer.percentageDiscountOffer]]" class="discount">[[room.roomRate.offer.percentageDiscountOffer]]%</span>
-						<span class="original-price margin-r-small">[[room.roomRate.fare.currency]][[room.roomRate.totalFare]]</span>
+						<!-- <span class="original&#45;price margin&#45;r&#45;small">[[room.roomRate.fare.currency]][[room.roomRate.totalFare]]</span> -->
+						<span hidden$="[[!room.roomRate.offer.percentageDiscountOffer]]" class$="[[_crossIfDiscountPresent(room.roomRate.offer)]] original-price margin-r-small">[[room.roomRate.fare.currency]][[room.roomRate.fare.totalFare]]</span>
 					</p>
 					<div class="price-container row">
 						<div>
 							<div class="base-price-container row">
-								<p class$="base-price" >
+								<h4 class="final-price discounted" hidden$="[[!room.roomRate.fare.totalDiscount]]">[[room.roomRate.fare.currency]][[_getDiscountedPrice(room)]]</h4>
+								<p class$="base-price" hidden$="[[room.roomRate.fare.totalDiscount]]" >
 									[[room.roomRate.fare.currency]][[_getDiscountedPrice(room)]]
 								</p>
 								<paper-menu-button class="dailybtn" vertical-align="top" vertical-offset="50" >
@@ -383,9 +412,9 @@ font-size: 12px;
 							<p class="avg-night-info">[[resources.averageNightFare]]</p>
 							<p hidden$="[[!room.roomRate.isPrepaid]]" class="extra-discount-info"><span class="tags ">[[resources.isPrepaid]]</span></p>
 							<p hidden$="[[!room.hasFreeCancellation]]" class="extra-discount-info"><span class="tags ">[[resources.freeCancellation]]</span></p>
-              <div class="orange">
-							<paper-spinner-lite active="[[_showCancellationLoader(room.hasFreeCancellation)]]" ></paper-spinner-lite>
-              </div>
+							<div class="orange">
+								<paper-spinner-lite active="[[_showCancellationLoader(room.hasFreeCancellation)]]" ></paper-spinner-lite>
+							</div>
 						</div>
 						<div class="right-container text-right">
 							<h4 class="final-price">
@@ -402,7 +431,7 @@ font-size: 12px;
 				<template is="dom-if" if="[[room.roomRate.cancellationPolicy]]">
 					<hotel-details-info class="avg-daily-info" no-heading id="text" text-content="[[room.roomRate.cancellationPolicy.text]]" collapse-length="150"></hotel-details-info>
 				</template>
-<template is="dom-if" if="[[room.roomRate.additionalCharges]]">
+				<template is="dom-if" if="[[room.roomRate.additionalCharges]]">
 					<hotel-details-info class="avg-daily-info" no-heading id="text" text-content="[[room.roomRate.additionalCharges.0]]" collapse-length="150"></hotel-details-info>
 				</template>
 				<template is="dom-if" if="[[room.roomRate.policies.length]]">
@@ -429,7 +458,8 @@ font-size: 12px;
 				<p class="demand-info" hidden$="[[_isGreaterThanFive(room.availableRoomCount)]]">In demand - only [[room.availableRoomCount]] rooms left</p>
 				<p class="discount-info">
 					<div class="base-price-container">
-						<span hidden$="[[!room.roomRate.offer.percentageDiscountOffer]]" class="discount">-[[room.roomRate.offer.percentageDiscountOffer]]%</span>
+						<span hidden$="[[!room.roomRate.offer.percentageDiscountOffer]]" class="discount">-[[room.roomRate.offer.percentageDiscountOffer]]%
+						</span>
 						<span hidden$="[[!room.roomRate.offer.percentageDiscountOffer]]" class$="[[_crossIfDiscountPresent(room.roomRate.offer)]]">[[room.roomRate.fare.currency]][[room.roomRate.fare.totalFare]]</span>
 						<h4 class="final-price discounted" hidden$="[[!room.roomRate.fare.totalDiscount]]">[[room.roomRate.fare.currency]][[_getDiscountedPrice(room)]]</h4>
 						<paper-menu-button opened="{{_menuOpened}}" class="dailybtn no-spacing-right"  horizontal-align="right" icon="info" vertical-offset="50" >
@@ -467,9 +497,9 @@ font-size: 12px;
 						<p class="extra-discount-info" hidden$="[[!room.roomRate.isPrepaid]]"><span class="tags"> [[resources.isPrepaid]]</span></p>
 						<!-- <p class="extra&#45;discount&#45;info" hidden$="[[_hideIfPenaltyExists(room.roomRate.cancellationPolicy)]]"><span class="tags">[[resources.freeCancellation]]</span></p> -->
 						<p hidden$="[[!room.hasFreeCancellation]]" class="extra-discount-info"><span class="tags ">[[resources.freeCancellation]]</span></p>
-              <div class="orange">
-						<paper-spinner-lite active="[[_showCancellationLoader(room.hasFreeCancellation)]]" ></paper-spinner-lite>
-              </div>
+						<div class="orange">
+							<paper-spinner-lite active="[[_showCancellationLoader(room.hasFreeCancellation)]]" ></paper-spinner-lite>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -559,7 +589,7 @@ font-size: 12px;
 
 			_getAmenitiesText(room){
 				const { roomViews, bedDetails } = room;
-				return (roomViews || []).join(', ') + ', ' + (bedDetails || []).map( bed => `${bed.count} #{bed.description}`).join(', ');
+				return (roomViews || []).join(', ') + ', ' + (bedDetails || []).map( bed => `${bed.count} ${bed.description}`).join(', ');
 			}
 
 			_clickedImage(e) {
@@ -617,7 +647,7 @@ font-size: 12px;
 			_fireSelectionChanged(e){
 				this.dispatchEvent(new CustomEvent('selection-change', {
 					detail: {
-						selected: !this.selected 
+						selected: this.selected || true
 					}
 				}));
 			}

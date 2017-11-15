@@ -18,7 +18,7 @@
     "gold-cc-input": "PolymerElements/gold-cc-input#^2.0.0",
     "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",
     "t-search": "nxtComponent/t-hotel-search",
-    "web-animations-js": "web-animations/web-animations-js#^2.3.1",
+    "web-animations-js": "^2.3.1",
     "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#^2.1.0",
     "paper-spinner": "PolymerElements/paper-spinner#^2.0.0",
     "paper-input-place": "mlisook/paper-input-place#^1.9.5",
@@ -32,7 +32,7 @@
   "resolutions": {
     "polymer": "^2.0.0",
     "iron-icons": "^2.0.0",
-    "paper-icon-button": "1 - 2",
+    "paper-icon-button": "^2.0.0",
     "iron-icon": "^2.0.0",
     "webcomponentsjs": "^v1.0.2",
     "paper-styles": "^2.0.0",
