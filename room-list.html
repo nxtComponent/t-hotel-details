@@ -22,6 +22,9 @@ Example:
       :host {
         display: block;
       }
+      .price-row{
+        cursor: pointer;
+      }
       .link-style{
         text-decoration: none;
         font-size: 14px;
@@ -165,7 +168,7 @@ Example:
           <p>[[resources.room]] [[index]] [[resources.total]]:</p>
           <h3 class="price">[[_getTotalAmount(roomTypes, selected, nights )]]</h3>
         </template>
-        <a href="#" class="not-mobile link-style" on-click="toggleCollapse">[[resources.change]]</a>
+        <a class="not-mobile link-style" >[[resources.change]]</a>
       </div>
     </div>
 
@@ -189,7 +192,7 @@ Example:
           </div>
         </div>
         <template is="dom-repeat" items="[[roomTypes]]" sort="_sortBy">
-          <hotel-room selected="[[_isSelected(index, selected)]]" on-selection-change="_selectionChanged" amenities="[[amenities]]" resources="[[resources]]" room="[[item]]"></hotel-room>
+          <hotel-room selected="[[_isSelected(index, selected)]]" index="[[index]]" on-selection-change="_selectionChanged" amenities="[[amenities]]" resources="[[resources]]" room="[[item]]"></hotel-room>
         </template>
         <!-- <a href="#" class="link&#45;style show&#45;more&#45;rooms row" role="button">SHOW MORE ROOMS</a> -->
       </div>
@@ -220,7 +223,8 @@ Example:
           roomTypes: Array,
           selected: {
             type: Number,
-            value: -1
+            value: 0,
+            observer: '_selectedChanged'
           },
           amenities: Array,
           count: Number,
@@ -252,14 +256,16 @@ Example:
 
       _selectionChanged(e){
         const { selected } = e.detail;
-        this.selected = selected? e.model.index: -1;
+        this.set('selected', selected? e.model.index: -1);
+      }
+
+      _selectedChanged(e){
         this.dispatchEvent(new CustomEvent('room-selection', {
           detail: {
             room: this.selected,
             amount: this._getTotalAmount(this.roomTypes, this.selected, this.nights)
           }
-        })
-        );
+        }));
       }
 
       _getLabel(opened){
@@ -273,8 +279,9 @@ Example:
       }
 
       _getTotalAmount(roomTypes, selected, nights){
+        const roomsSortedByPrice = roomTypes.sort(this._sortBy);
         if(selected >= 0){
-          const roomType = roomTypes[selected];
+          const roomType = roomsSortedByPrice[selected];
           const fare = roomType.roomRate.fare;
           const discountedFare = fare.totalFare - fare.totalDiscount;
           return nights * discountedFare;

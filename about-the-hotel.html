@@ -99,6 +99,9 @@ Example:
       </div>
     </div>
     <div class="bottom-container flex row-md flex-align-start-md">
+      <div class="margin-b item">
+        <hotel-details-info heading="Hotel Amenities" class="popular-things" list-items="[[_getAmenities(hotelAmenities)]]"></hotel-details-info>
+      </div>
       <template is="dom-repeat" items="[[_getCategories(amenities)]]">
         <div class="margin-b item">
           <hotel-details-info heading="[[item]]" class="popular-things" list-items="[[_getOfferingsInCategory(amenities, item)]]"></hotel-details-info>
@@ -129,7 +132,7 @@ Example:
           </div>
         </hotel-details-info>
       </div>
-      </div>
+    </div>
   </template>
   <script>
     class AboutTheHotel extends Polymer.Element{
@@ -145,6 +148,7 @@ Example:
           descriptions: Array,
           expandedDescription: Boolean,
           amenities: Array,
+          hotelAmenities: Array,
           cancellationPolicy: String,
           checkinCheckoutPolicy: Object,
           cardsSupported:Array
@@ -158,6 +162,10 @@ Example:
           }
           return offerings;
         }, []);
+      }
+
+      _getAmenities(amenities){
+        return amenities.map(a => a.name);
       }
 
       _getCategories(items){
