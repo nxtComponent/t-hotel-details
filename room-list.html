@@ -166,7 +166,7 @@ Example:
       <div class="row price-row">
         <template is="dom-if" if="[[_isRoomSelected(selected)]]">
           <p>[[resources.room]] [[index]] [[resources.total]]:</p>
-          <h3 class="price">[[_getTotalAmount(roomTypes, selected, nights )]]</h3>
+          <h3 class="price">[[resources.currency]][[_getTotalAmount(roomTypes, selected, nights )]]</h3>
         </template>
         <a class="not-mobile link-style" >[[resources.change]]</a>
       </div>
@@ -242,7 +242,6 @@ Example:
 
       toggleCollapse(e){
         e.preventDefault();
-
         this.$.collapse.toggle();
       }
 

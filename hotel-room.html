@@ -12,30 +12,30 @@ Example:
 Example:
 
 <my-elem>
-	<h2>Hello my-elem</h2>
+  <h2>Hello my-elem</h2>
 </my-elem>
 
 @demo demo/index.html
 -->
 <dom-module id="hotel-room">
-	<template>
-		<style include="hotel-details-styles">
-			:host {
-				--rating-icon-size: 14px;
-				--rating-ink-color: var(--shade-semidark);
-				--rating-icon-color: transparent;
-				--info-content: {
-					line-height: 1.2;
-				}
-				;
-			}
+  <template>
+    <style include="hotel-details-styles">
+      :host {
+        --rating-icon-size: 14px;
+        --rating-ink-color: var(--shade-semidark);
+        --rating-icon-color: transparent;
+        --info-content: {
+          line-height: 1.2;
+        }
+        ;
+      }
 
-			.orange{
-				align-items: right;
-				padding-top: 10px;
-			}
+      .orange{
+        align-items: right;
+        padding-top: 10px;
+      }
 
-			.policy-dialog{
+      .policy-dialog{
         max-width: 800px;
         background: #fff;
         padding: 10px 0;
@@ -391,25 +391,27 @@ Example:
                 <p class$="base-price" hidden$="[[room.roomRate.fare.totalDiscount]]" >
                   [[room.roomRate.fare.currency]][[_getDiscountedPrice(room)]]
                 </p>
-                <paper-menu-button class="dailybtn" vertical-align="top" vertical-offset="50" >
-                  <paper-icon-button icon="info" slot="dropdown-trigger" id="dailyRateButton">
-                    <!-- <i class="arrow&#45;up" hidden$="[[!_menuOpened]]"></i> -->
-                  </paper-icon-button>
-                  <div slot="dropdown-content" class="daily-rates">
-                    <h5 class="rate-headline">[[resources.dailyRates]]</h5>
-                    <template is="dom-repeat" items="[[_getWeeks(room.roomRate.dailyRate)]]" as="week">
-                      <p class="week">[[resources.week]] [[incrementByOne(index)]]</p>
-                      <div class="row">
-                        <template is="dom-repeat" items="[[week]]">
-                          <div class="daily-item">
-                            <p class="day">[[item.day]]</p>
-                            <p class="price">[[room.roomRate.fare.currency]][[item.amount]]</p>
-                          </div>
-                        </template>
-                      </div>
-                    </template>
-                  </div>
-                </paper-menu-button>
+                <template is="dom-if" if="[[_showIfLengthGreaterThanOne(room.roomRate.dailyRate)]]">
+                  <paper-menu-button class="dailybtn" vertical-align="top" vertical-offset="50" >
+                    <paper-icon-button icon="info" slot="dropdown-trigger" id="dailyRateButton">
+                      <!-- <i class="arrow&#45;up" hidden$="[[!_menuOpened]]"></i> -->
+                    </paper-icon-button>
+                    <div slot="dropdown-content" class="daily-rates">
+                      <h5 class="rate-headline">[[resources.dailyRates]]</h5>
+                      <template is="dom-repeat" items="[[_getWeeks(room.roomRate.dailyRate)]]" as="week">
+                        <p class="week">[[resources.week]] [[incrementByOne(index)]]</p>
+                        <div class="row">
+                          <template is="dom-repeat" items="[[week]]">
+                            <div class="daily-item">
+                              <p class="day">[[item.day]]</p>
+                              <p class="price">[[room.roomRate.fare.currency]][[item.amount]]</p>
+                            </div>
+                          </template>
+                        </div>
+                      </template>
+                    </div>
+                  </paper-menu-button>
+                </template>
               </div>
               <p class="avg-night-info">[[resources.averageNightFare]]</p>
               <p hidden$="[[!room.roomRate.isPrepaid]]" class="extra-discount-info"><span class="tags ">[[resources.isPrepaid]]</span></p>
@@ -441,13 +443,16 @@ Example:
         </template>
       </div>
       <div class="not-mobile text-center second">
-        <star-rating class="margin-b" icon="accessibility" rating="[[room.adultOccupancy]]" hide-unselected></star-rating>
+        <star-rating class="margin-b" src="[[_getPassengerIcon(room.adultOccupancy, room.childOccupancy)]]" rating="[[_getPassengerCount(room.adultOccupancy, room.childOccupancy)]]" hide-unselected></star-rating>
         <p class="guest-count">
-          [[room.adultOccupancy]] [[resources.guests]]
+          [[_getCount(room.adultOccupancy , room.childOccupancy)]] [[resources.guests]]
         </p>
       </div>
       <div class="not-mobile third">
-        test
+        [[_getRefundabilityInfo(room.refundability)]]
+        <template is="dom-repeat" items="[[room.inclusions]]">
+          [[item]]
+        </template>
         <ul>
           <template is="dom-repeat" item="[[_getAmenities(amenities)]]">
             <li class="amenities-info">
@@ -458,30 +463,32 @@ Example:
         </ul>
       </div>
       <div class="not-mobile text-right fourth">
-        <p class="demand-info" hidden$="[[_isGreaterThanFive(room.availableRoomCount)]]">In demand - only [[room.availableRoomCount]] rooms left</p>
+        <p class="demand-info" hidden$="[[_isGreaterThanFive(room.availableRoomCount)]]">In demand - only [[_getText(room.availableRoomCount)]] left</p>
         <p class="discount-info">
           <div class="base-price-container">
             <span hidden$="[[!room.roomRate.offer.percentageDiscountOffer]]" class="discount">-[[room.roomRate.offer.percentageDiscountOffer]]%
             </span>
             <span hidden$="[[!room.roomRate.offer.percentageDiscountOffer]]" class$="[[_crossIfDiscountPresent(room.roomRate.offer)]]">[[room.roomRate.fare.currency]][[room.roomRate.fare.totalFare]]</span>
             <h4 class="final-price discounted" hidden$="[[!room.roomRate.fare.totalDiscount]]">[[room.roomRate.fare.currency]][[_getDiscountedPrice(room)]]</h4>
-            <paper-menu-button opened="{{_menuOpened}}" class="dailybtn no-spacing-right"  horizontal-align="right" icon="info" vertical-offset="50" >
-              <paper-icon-button slot="dropdown-trigger" icon="info" id="dailyRateButton"> </paper-icon-button>
-              <div slot="dropdown-content" class="text-left daily-rates">
-                <h5 class="rate-headline">[[resources.dailyRates]]</h5>
-                <template is="dom-repeat" items="[[_getWeeks(room.roomRate.dailyRate)]]" as="week">
-                  <p class="week">[[resources.week]] [[incrementByOne(index)]]</p>
-                  <div class="row">
-                    <template is="dom-repeat" items="[[week]]">
-                      <div class="daily-item">
-                        <p class="day">[[item.day]]</p>
-                        <p class="price">[[room.roomRate.fare.currency]][[item.amount]]</p>
-                      </div>
-                    </template>
-                  </div>
-                </template>
-              </div>
-            </paper-menu-button>
+            <template is="dom-if" if="[[_showIfLengthGreaterThanOne(room.roomRate.dailyRate)]]">
+              <paper-menu-button opened="{{_menuOpened}}" class="dailybtn no-spacing-right"  horizontal-align="right" icon="info" vertical-offset="50" >
+                <paper-icon-button slot="dropdown-trigger" icon="info" id="dailyRateButton"> </paper-icon-button>
+                <div slot="dropdown-content" class="text-left daily-rates">
+                  <h5 class="rate-headline">[[resources.dailyRates]]</h5>
+                  <template is="dom-repeat" items="[[_getWeeks(room.roomRate.dailyRate)]]" as="week">
+                    <p class="week">[[resources.week]] [[incrementByOne(index)]]</p>
+                    <div class="row">
+                      <template is="dom-repeat" items="[[week]]">
+                        <div class="daily-item">
+                          <p class="day">[[item.day]]</p>
+                          <p class="price">[[room.roomRate.fare.currency]][[item.amount]]</p>
+                        </div>
+                      </template>
+                    </div>
+                  </template>
+                </div>
+              </paper-menu-button>
+            </template>
           </div>
         </p>
         <p class="avg-night-info">[[resources.averageNightFare]]</p>
@@ -553,56 +560,67 @@ Example:
           _amenitiesCategories: {
             type: Array,
             value: [ 'television', 'swimming pool', 'internet']
-          } 
-        };
-      }
-
-      _findPriceDiscount(discount) {
-        return discount ? 'discounted-price' : '';
-      }
-
-      _showCancellationLoader(hasFreeCancellation){
-        if(hasFreeCancellation === undefined)
-        {
-          // this.dispatchEvent(new CustomEvent('get-free-cancellation', this.room.id));
+            } 
+          };
         }
-        return hasFreeCancellation === undefined;
-      }
 
-      _hideIfPenaltyExists(cancellationPolicy){
-        return (!cancellationPolicy || !cancellationPolicy.penaltyRules  || !cancellationPolicy.penaltyRules.length === 0);
-      }
+        _getText(count){
+          return count > 1 ? '1 room': `${count} rooms`;
+        }
 
-      _getString(list, character, key){
-        if(list && list.length > 0){
-          if(key){
-            return list.map(item => `${item.count} ${ item[key] }`).join(character);
+        _findPriceDiscount(discount) {
+          return discount ? 'discounted-price' : '';
+        }
+
+        _showCancellationLoader(hasFreeCancellation){
+          if(hasFreeCancellation === undefined)
+          {
+            // this.dispatchEvent(new CustomEvent('get-free-cancellation', this.room.id));
           }
-          else{
-            return list.join(character);
+          return hasFreeCancellation === undefined;
+        }
+
+        _hideIfPenaltyExists(cancellationPolicy){
+          return (!cancellationPolicy || !cancellationPolicy.penaltyRules  || !cancellationPolicy.penaltyRules.length === 0);
+        }
+
+      _getRefundabilityInfo(refundability){
+        if(!refundability || refundability.toLowerCase() === 'unknown' ){
+          return 'Non refundable';
+        }
+        return refundability;
+      }
+
+        _getString(list, character, key){
+          if(list && list.length > 0){
+            if(key){
+              return list.map(item => `${item.count} ${ item[key] }`).join(character);
+            }
+            else{
+              return list.join(character);
+            }
           }
         }
-      }
 
-      _getAmenities(amenities){
-        return amenities.filter(amenity => {
-          return amenity.category && this._amenitiesCategories.indexOf(amenity.category.toLowerCase() >= 0);
-        });
-      }
+        _getAmenities(amenities){
+          return amenities.filter(amenity => {
+            return amenity.category && this._amenitiesCategories.indexOf(amenity.category.toLowerCase() >= 0);
+          });
+        }
 
-      _getAmenitiesText(room){
-        const { roomViews, bedDetails } = room;
-        return (roomViews || []).join(', ') + ', ' + (bedDetails || []).map( bed => `${bed.count} ${bed.description}`).join(', ');
-      }
+        _getAmenitiesText(room){
+          const { roomViews, bedDetails } = room;
+          return (roomViews || []).join(', ') + ', ' + (bedDetails || []).map( bed => `${bed.count} ${bed.description}`).join(', ');
+        }
 
-      _clickedImage(e) {
-        e.preventDefault();
-        this.dispatchEvent(new CustomEvent('room-image-clicked', this.room));
-      }
+        _clickedImage(e) {
+          e.preventDefault();
+          this.dispatchEvent(new CustomEvent('room-image-clicked', this.room));
+        }
 
-      _togglePolicyDialog(){
-        this._isDialogOpen = !this._isDialogOpen;
-      }
+        _togglePolicyDialog(){
+          this._isDialogOpen = !this._isDialogOpen;
+        }
 
       _crossIfDiscountPresent(discount){
         return (discount && discount.percentageDiscountOffer)? 'original-price discounted-price': 'discounted-price';
@@ -645,6 +663,36 @@ Example:
 
       _isGreaterThanFive(roomCount){
         return roomCount > 5 || roomCount === 0;
+      }
+
+      _getPassengerIcon(adults, children, isCount){
+        if(children === 0){
+          if(isCount){
+            return adults;
+          }
+          return '../images/Single.svg';
+        }
+        else{
+          if(isCount){
+            return 1;
+          }
+          return '../images/Family.svg';
+        }
+      }
+
+      _getCount(adults, children){
+        return adults + children;
+      }
+
+      _getPassengerCount(adults, children){
+        if(children === 0){
+          return adults;
+        }
+        return 1;
+      }
+
+      _showIfLengthGreaterThanOne(dailyRates){
+        return dailyRates.length > 1;
       }
 
       _fireSelectionChanged(e){

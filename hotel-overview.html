@@ -16,147 +16,152 @@
 
 
 <dom-module id="hotel-overview">
-	<template>
-		<custom-style>
-			<style include="hotel-details-styles">
-				:host{
-					--rating-icon-size: 20px;
-					--rating-icon-padding: 0px;
-				}
+  <template>
+    <custom-style>
+      <style include="hotel-details-styles">
+        :host{
+          --rating-icon-size: 20px;
+          --rating-icon-padding: 0px;
+          font-family: 'Roboto','Normal';
+          font-size: 15px;
+        }
 
-				iron-icon {
-					width: 20px;
-					height: 20px;
-					color: var(--shade-semidark, #b5b5b5);
-				}
+        iron-icon {
+          width: 20px;
+          height: 20px;
+          color: var(--shade-semidark, #b5b5b5);
+        }
 
-				a{
-					text-decoration: none;
-					speak-numeral: digits;
-				}
+        a{
+          text-decoration: none;
+          speak-numeral: digits;
+        }
 
-				[icon="communication:location-on"] {
-					color: var(--link-color);
-				}
+        [icon="communication:location-on"] {
+          color: var(--link-color);
+        }
 
-				.right-container {
-					display: none;
-				}
+        .right-container {
+          display: none;
+        }
 
-				@media (min-width: 550px) {
-					.row-md {
-						@apply --layout-wrap;
-					}
-					.align-end {
-						@apply --layout-end;
-					}
-					.right-container {
-						display: block;
-					}
-					.left-container {
-						flex: 1 1 300px;
-					}
-					.row-justified {
-						@apply --layout-justified;
-					}
-					h2 {
-						margin-right: 20px;
-					}
-					.discount {
-						background: var(--app-red-color);
-						padding: 5px;
-						color: var(--discount-color, #fff);
-						border-radius: 2px;
-						line-height: 30px;
-					}
-					.originalPrice {
-						font-size: 16px;
-						text-decoration: line-through;
-					}
-					.bookPrice {
-						font-size: 24px;
-						line-height: 1.2;
-						color: var(--app-red-color);
-						font-weight: bold;
-					}
-				}
-				@media (min-width: 1024px){
-					h2{
-						font-size: 24px;
-						font-weight: 500;
-					}
-					p, a, dl, dt:not(.resource-label), dd {
-						font-size: 12px;
-					}
-				}
+        @media (min-width: 550px) {
+          :host{
+            font-size: 14px;
+          }
+          .row-md {
+            @apply --layout-wrap;
+          }
+          .align-end {
+            @apply --layout-end;
+          }
+          .right-container {
+            display: block;
+          }
+          .left-container {
+            flex: 1 1 300px;
+          }
+          .row-justified {
+            @apply --layout-justified;
+          }
+          h2 {
+            margin-right: 20px;
+          }
+          .discount {
+            background: var(--app-red-color);
+            padding: 5px;
+            color: var(--discount-color, #fff);
+            border-radius: 2px;
+            line-height: 30px;
+          }
+          .originalPrice {
+            font-size: 16px;
+            text-decoration: line-through;
+          }
+          .bookPrice {
+            font-size: 24px;
+            line-height: 1.2;
+            color: var(--app-red-color);
+            font-weight: bold;
+          }
+        }
+        @media (min-width: 1024px){
+          h2{
+            font-size: 24px;
+            font-weight: 500;
+          }
+          p, a, dl, dt:not(.resource-label), dd {
+            font-size: 15px;
+          }
+        }
 
-				.header-row{
-					@apply --layout-start;
-				}
+        .header-row{
+          @apply --layout-start;
+        }
 
-				.icons-header {
-					height: 30px;
-					margin-left: 10px;
-				}
+        .icons-header {
+          height: 30px;
+          margin-left: 10px;
+        }
 
-  .paragraph-break{
-    max-width: 300px;
-  }
-@media (min-width: 1024px) {
-  .paragraph-break{
-    max-width: 500px;
-  }
-}
-				.icons-header paper-icon-button{
-					padding: 3px;
-					border-radius: 50%;
-					color: var(--shade-light);
-					width: 30px;
-					height: 30px;
-					margin: 0;
-				}
+        .paragraph-break{
+          max-width: 300px;
+        }
+        @media (min-width: 1024px) {
+          .paragraph-break{
+            max-width: 700px;
+          }
+        }
+        .icons-header paper-icon-button{
+          padding: 3px;
+          border-radius: 50%;
+          color: var(--shade-light);
+          width: 30px;
+          height: 30px;
+          margin: 0;
+        }
 
-				.icons-header .favorite[active=""] {
-					color: var(--app-red-color);
-				}
+        .icons-header .favorite[active=""] {
+          color: var(--app-red-color);
+        }
 
-				.header-menu-button {
-					padding: 0;
-					color: var(--shade-light);
-					margin-left: 5px;
-				}
+        .header-menu-button {
+          padding: 0;
+          color: var(--shade-light);
+          margin-left: 5px;
+        }
 
-				.header-menu-button iron-icon{
-					margin-right: 5px;
-				}
-			</style>
-		</custom-style>
-		<div class="row row-justified">
-			<div class="left-container">
-				<div class="row header-row">
-					<div class="row-md margin-b">
-						<h2 class="margin-b">[[hotel.name]]</h2>
-						<star-rating  rating="[[hotel.rating]]"></star-rating>
-					</div>
+        .header-menu-button iron-icon{
+          margin-right: 5px;
+        }
+      </style>
+    </custom-style>
+    <div class="row row-justified">
+      <div class="left-container">
+        <div class="row header-row">
+          <div class="row-md margin-b">
+            <h2 class="margin-b">[[hotel.name]]</h2>
+            <star-rating icon="star"  rating="[[hotel.rating]]"></star-rating>
+          </div>
 
           <template is="dom-if" if="[[!isLightHeader]]">
-					<div class="icons-header row flex">
-						<paper-icon-button  active ="{{hotel.isFavorite}}" on-click="_fireFavoriteActionEvent" class="favorite" icon="[[resources.favorite]]" toggles></paper-icon-button>
-						<paper-menu-button dynamic-align  on-iron-select="_shareOnPlatform"  class="header-menu-button">
-							<paper-icon-button icon="[[resources.share]]" slot="dropdown-trigger" alt="menu"></paper-icon-button>
-							<paper-listbox slot="dropdown-content">
-								<template is="dom-repeat" items="[[hotel.sharingPlatforms]]">
-									<paper-item label="[[item.value]]" >
-										<iron-icon icon="[[item.icon]]"></iron-icon>
-										[[item.label]]
-									</paper-item>
-								</template>
-							</paper-listbox>
-						</paper-menu-button>
-					</div>
-        </template>
-				</div>
-				<p class="paragraph-break margin-b">[[hotel.address]]</p>
+            <div class="icons-header row flex">
+              <paper-icon-button  active ="{{hotel.isFavorite}}" on-click="_fireFavoriteActionEvent" class="favorite" icon="[[resources.favorite]]" toggles></paper-icon-button>
+              <paper-menu-button dynamic-align  on-iron-select="_shareOnPlatform"  class="header-menu-button">
+                <paper-icon-button icon="[[resources.share]]" slot="dropdown-trigger" alt="menu"></paper-icon-button>
+                <paper-listbox slot="dropdown-content">
+                  <template is="dom-repeat" items="[[hotel.sharingPlatforms]]">
+                    <paper-item label="[[item.value]]" >
+                      <iron-icon icon="[[item.icon]]"></iron-icon>
+                      [[item.label]]
+                    </paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-menu-button>
+            </div>
+          </template>
+        </div>
+        <p class="paragraph-break margin-b">[[hotel.address]]</p>
         <div class="row">
           <template is="dom-if" if="[[!isLightHeader]]">
             <a href="tel:[[hotel.phone]]" class="row margin-r">
@@ -252,7 +257,7 @@
     _fireFavoriteActionEvent(e){
       this.dispatchEvent(new CustomEvent('favorite-tap', {detail: {isFavorited: this.hotel.isFavorited}}));
     }
-    
+
     _fireReserveEvent(e){
       this.dispatchEvent(new CustomEvent('reserve-tap', {detail: {isFavorited: this.hotel.isFavorited}}));
     }

@@ -63,7 +63,9 @@
     </style>
     <div class="stars">
       <template is="dom-repeat" items="[[_convertArray(total)]]">
-        <iron-icon icon="[[icon]]" 
+        <iron-icon
+          icon="[[icon]]" 
+          src="[[src]]"
           disabled$="[[readonly]]"
           class$="[[_compareVals(rating,item)]]">
         </iron-icon>
@@ -89,10 +91,12 @@
           * @type {String}
           */
           icon: {
-            type: String,
-            value: "star"
+            type: String
           },
 
+          src: {
+            type: String
+          },
           /**
           * hideUnselected: the hideUnselected to use 
           */

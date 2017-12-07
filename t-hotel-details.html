@@ -33,6 +33,10 @@ Example:
     <style include="hotel-details-styles">
       :host {
         display: block;
+        font-family: 'Roboto';
+        max-width: 1280px;
+        font-weight: 400;
+        margin: 0 auto;
       }
 
       #hotelRoom {
@@ -161,7 +165,7 @@ Example:
       }
       .heading-label{
         color: var(--shade-light);
-        font-size: 14px;
+        font-size: 16px;
         margin-bottom: 5px;
       }
 
@@ -240,7 +244,7 @@ Example:
           <div class="row column-md extra-detail not-tablet">
             <template is="dom-repeat" items="[[details.areaAttractions]]" filter="_isWithin5Kms" observe="description">
               <div class="detail-item row-md">
-                <iron-icon icon="[[item.icon]]"></iron-icon>
+                <iron-icon src="../images/Transport.svg"></iron-icon>
                 <p class="not-mobile">[[item.name]]</p>
               </div>
             </template>
@@ -249,7 +253,7 @@ Example:
             <div class="column">
               <h2 class="heading-label">[[resources.details.map.heading]]</h2>
               <div class="flex-item">
-                <t-hotel-map id="map" api-key="[[details.googleApiKey]]" points-of-interest="[[details.pointsOfInterest]]" resources="[[resources.details]]" center="[[detail.geoCode]]" enable-directions enable-nearby >
+                <t-hotel-map id="map" api-key="[[details.googleApiKey]]" points-of-interest="[[details.pointsOfInterest]]" resources="[[resources.details]]" center="[[_getGeocode(details.geoCode)]]" enable-directions enable-nearby >
 
                   <hotel-overview
                     slot="overview"
@@ -288,7 +292,7 @@ Example:
       <total-price-container id="checkout" amount="[[_calculatedCost]]" resources="[[resources.details]]"></total-price-container>
 
       <div class="mobile-view">
-        <t-hotel-map api-key="[[details.googleApiKey]]" points-of-interest="[[details.pointsOfInterest]]" resources="[[resources.details]]" center="[[details.geoCode]]"  location-name="[[overview.address]]" location-details="[[overview.address]]" enable-nearby >
+        <t-hotel-map api-key="[[details.googleApiKey]]" points-of-interest="[[details.pointsOfInterest]]" resources="[[resources.details]]" center="[[_getGeocode(details.geoCode)]]"  location-name="[[overview.address]]" location-details="[[overview.address]]" enable-nearby >
           <hotel-overview
             slot="overview"
             is-light-header
@@ -410,6 +414,13 @@ Example:
           sum = sum + price;
           return sum;
         },0);
+      }
+
+      _getGeocode(latlng){
+        return {
+          latitude: latlng.lat,
+          longitude: latlng.long
+        }
       }
 
       _getMapHeader(overview){
