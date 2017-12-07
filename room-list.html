@@ -172,7 +172,7 @@ Example:
       </div>
     </div>
 
-    <iron-collapse id="collapse" opened="{{opened}}">
+    <iron-collapse id="collapse" opened="{{ opened }}">
       <div class="collapse-content">
         <div class="header room-grid not-mobile">
           <div class="first">
@@ -242,6 +242,10 @@ Example:
 
       toggleCollapse(e){
         e.preventDefault();
+        const hotelDetails = document.querySelector('t-hotel-details');
+        const collapses =  hotelDetails.root.querySelectorAll('room-list');
+        collapses.forEach(item => item.root.querySelector('iron-collapse').hide());
+        debugger;
         this.$.collapse.toggle();
       }
 

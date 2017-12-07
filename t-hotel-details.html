@@ -303,11 +303,11 @@ Example:
           </hotel-overview>
         </t-hotel-map>
       </div>
-      <paper-tabs selected="{{_selectedTab}}" >
+      <paper-tabs  selected="{{_selectedTab}}">
         <paper-tab>[[resources.details.aboutHotel]]</paper-tab>
         <paper-tab>[[resources.details.guestReviews]]</paper-tab>
       </paper-tabs>
-      <iron-pages selected="[[_selectedTab]]">
+      <iron-pages selected="{{_selectedTab}}">
         <section>
           <about-the-hotel
             id="about"
