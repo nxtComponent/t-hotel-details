@@ -53,6 +53,7 @@
     "iron-iconset-svg": "^2.0.0",
     "iron-input": "^2.0.0",
     "paper-spinner": "^2.0.0",
-    "iron-overlay-behavior": "^2.2.0"
+    "iron-overlay-behavior": "^2.2.0",
+    "iron-selector": "^2.0.1"
   }
 }

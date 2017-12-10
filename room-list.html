@@ -242,11 +242,19 @@ Example:
 
       toggleCollapse(e){
         e.preventDefault();
+        var opened = false;
+        if(this.$.collapse.opened){
+          var opened = true;
+        }
         const hotelDetails = document.querySelector('t-hotel-details');
         const collapses =  hotelDetails.root.querySelectorAll('room-list');
         collapses.forEach(item => item.root.querySelector('iron-collapse').hide());
-        debugger;
-        this.$.collapse.toggle();
+        if(opened){
+          this.$.collapse.hide();
+        }
+        else{
+          this.$.collapse.show();
+        }
       }
 
       _isRoomSelected(selected){
