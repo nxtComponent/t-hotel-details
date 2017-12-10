@@ -1,0 +1,184 @@
+<link rel="import" href="../paper-button/paper-button.html">
+<!--
+A comment describing this element
+
+Example:
+
+<my-elem></my-elem>
+
+Example:
+
+<my-elem>
+  <h2>Hello my-elem</h2>
+</my-elem>
+
+@demo demo/index.html
+-->
+
+<dom-module id="about-the-hotel">
+  <template>
+    <style include="hotel-details-styles">
+      :host {
+        display: block;
+        padding: 15px 0;
+      }
+      .margin-b{
+        margin-bottom: 15px;
+      }
+      .info-child{
+        --info-header-font-size: 14px;
+        --info-header:{
+          line-height: 10px;
+          margin-bottom: 5px;
+        };
+        margin-bottom: 5px;
+      }
+      paper-button.link {
+				color: var(--paper-blue-900);
+				--paper-button-ink-color: var(--paper-blue-900);
+				text-transform: capitalize;
+				padding-left: 0;
+				margin-left: 0;
+			}
+
+
+      .card-item{
+        width: 40px;
+        height: auto;
+        margin-top: 5px;
+        margin-right: 5px;
+      }
+      .card-item:last-of-type{
+        margin-right: 0;
+      }
+      @media (min-width: 550px){
+
+        .hotel-description{
+          @apply --layout-flex-9;
+          flex: 1 0 66%;
+
+        }
+        .bottom-container{
+          @apply --layout-wrap;
+        }
+
+        .popular-things-container,
+        .bottom-container .item {
+          padding-left: 10px;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          flex: 1 0 33%;
+
+        }
+        .item:first-of-type{
+          padding-left: 0;
+        }
+      }
+      @media (min-width: 1024px){
+        .hotel-description{
+          flex: 1 0 75%;
+        }
+
+        .popular-things-container,
+        .bottom-container .item {
+          flex: 1 0 25%;
+          max-width: 400px;
+        }
+      }
+    </style>
+
+    <div class="row-md flex-align-start-md ">
+      <div class="margin-b hotel-description">
+        <template is="dom-repeat" items="[[descriptions]]">
+          <hotel-details-info expanded="[[expandedDescription]]" collapse-length="528" text-content="[[item.value]]"></hotel-details-info>
+        </template>
+      </div>
+      <div class="margin-b popular-things-container">
+        <hotel-details-info heading="[[resources.pointOfInterest]]" class="popular-things" list-items="[[pointsOfInterest]]"></hotel-details-info>
+      </div>
+    </div>
+    <div class="bottom-container flex row-md flex-align-start-md">
+      <div class="margin-b item">
+        <hotel-details-info heading="Hotel Amenities" class="popular-things" list-items="[[_getAmenities(hotelAmenities)]]"></hotel-details-info>
+      </div>
+      <template is="dom-repeat" items="[[_getCategories(amenities)]]">
+        <div class="margin-b item">
+          <hotel-details-info heading="[[item]]" class="popular-things" list-items="[[_getOfferingsInCategory(amenities, item)]]"></hotel-details-info>
+        </div>
+      </template>
+      <div class="margin-b item">
+        <hotel-details-info heading="Hotel Policies" class="popular-things" >
+          <div slot="content">
+            <hotel-details-info class="info-child" heading="[[resources.checkIn]]" class="popular-things" text-content="[[resources.from]] [[checkinCheckoutPolicy.inTime]]"> </hotel-details-info>
+            <hotel-details-info class="info-child" heading="[[resources.checkOut]]" class="popular-things" text-content="[[resources.until]] [[checkinCheckoutPolicy.outTime]]"> </hotel-details-info>
+            <hotel-details-info collapse-length="300" class="info-child cancellation-policy" 
+              heading="[[resources.cancellationPolicy]]"
+              class="popular-things"
+              text-content="[[cancellationPolicy]]"
+              >
+            </hotel-details-info>
+
+            <template is="dom-if" if="[[cardsSupported]]">
+              <hotel-details-info class="info-child" collapse-length="400" heading="Cards accepted by this property" >
+                <div slot="content">
+                  <template is="dom-repeat" items="[[cardsSupported]]">
+                    <img src="../images/[[item]].png"  class="card-item" alt="[[item]]" />
+                  </template>
+                </div>
+              </hotel-details-info>
+            </template>
+
+          </div>
+        </hotel-details-info>
+      </div>
+    </div>
+  </template>
+  <script>
+    class AboutTheHotel extends Polymer.Element{
+
+      static get is(){
+        return 'about-the-hotel';
+      } 
+
+      static get properties(){
+        return {
+          pointsOfInterest:Array,
+          resources: Object,
+          descriptions: Array,
+          expandedDescription: Boolean,
+          amenities: Array,
+          hotelAmenities: Array,
+          cancellationPolicy: String,
+          checkinCheckoutPolicy: Object,
+          cardsSupported:Array
+        }
+      }
+
+      _getOfferingsInCategory(items, category){
+        return items.reduce((offerings, item) => {
+          if(item.category ===  category){
+            offerings.push(item.name);
+          }
+          return offerings;
+        }, []);
+      }
+
+      _getAmenities(amenities){
+        return amenities.map(a => a.name);
+      }
+
+      _getCategories(items){
+        var categories = new Set();
+        items.forEach(item => {
+          if(item.category)
+            categories.add(item.category);
+        });
+        return Array.from(categories);
+      }
+
+    };
+
+window.customElements.define(AboutTheHotel.is, AboutTheHotel);
+  </script>
+</dom-module>

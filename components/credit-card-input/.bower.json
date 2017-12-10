@@ -1,0 +1,47 @@
+{
+  "name": "credit-card-input",
+  "version": "1.0.9",
+  "description": "A credit card input field",
+  "authors": [
+    "The Polymer Authors"
+  ],
+  "keywords": [
+    "web-components",
+    "polymer",
+    "input"
+  ],
+  "main": "credit-card-input.html",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/IngressoRapidoWebComponents/credit-card-input.git"
+  },
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/IngressoRapidoWebComponents/credit-card-input",
+  "ignore": [],
+  "dependencies": {
+    "iron-validator-behavior": "PolymerElements/iron-validator-behavior#^1.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
+    "iron-form-element-behavior": "PolymerElements/iron-form-element-behavior#^1.0.0",
+    "iron-icon": "PolymerElements/iron-icon#^1.0.0",
+    "paper-input": "PolymerElements/paper-input#^1.0.0",
+    "paper-styles": "PolymerElements/paper-styles#^1.0.0",
+    "polymer": "Polymer/polymer#^1.1.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-test-helpers": "PolymerElements/iron-test-helpers#^1.0.0",
+    "test-fixture": "PolymerElements/test-fixture#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "_release": "1.0.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.9",
+    "commit": "78ca53df5212156c5bbde9c7eda5c2bb750ebe89"
+  },
+  "_source": "https://github.com/IngressoRapidoWebComponents/credit-card-input.git",
+  "_target": "^1.0.9",
+  "_originalSource": "IngressoRapidoWebComponents/credit-card-input"
+}

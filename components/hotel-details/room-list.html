@@ -1,0 +1,306 @@
+<!--
+A comment describing this element
+
+Example:
+
+<my-elem></my-elem>
+
+Example:
+
+<my-elem>
+  <h2>Hello my-elem</h2>
+</my-elem>
+
+@demo demo/index.html
+-->
+<link rel="import" href="hotel-room.html">
+
+<dom-module id="room-list">
+  <template>
+
+    <style include="hotel-details-styles">
+      :host {
+        display: block;
+      }
+      .price-row{
+        cursor: pointer;
+      }
+      .link-style{
+        text-decoration: none;
+        font-size: 14px;
+        line-height: 1;
+        color: var(--link-color);
+      }
+      .price {
+        color: var(--shade-dark);
+        line-height: 21px;
+        font-size: 18px;
+        margin: 0 10px;
+      }
+      .price-row p {
+        font-size: 16px;
+        color: var(--shade-semidark);
+        line-height: 21px;
+      }
+      .toggle-header{
+        padding: 10px 24px;
+        background: var(--shade-superlight);
+        color: var(--shade-semidark);
+        min-height: 50px;
+      }
+      .toggle-header .selection{
+        color: #212121;
+      }
+      .collapse-content{
+        border: 1px solid var(--shade-superlight);
+      }
+      .header-option-row{
+        text-decoration: none;
+        line-height: 50px;
+        color: inherit;
+        width: 100%;
+      }
+      .header-option-row h3,
+      .header-option-row p{
+        margin-right: 5px;
+        line-height: 50px;
+        margin-bottom: 0;
+      }
+      p{
+        line-height: 24px;
+        color: var(--shade-semidark);
+      }
+      h3{
+        color: var(--shade-dark);
+        line-height: 24px;
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+
+      hotel-room {
+        padding: 10px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        border-bottom: 1px solid var(--shade-superlight);
+      }
+      .show-more-rooms {
+        height: 37px;
+        @apply --container-shadow;
+        @apply --layout-center-justified;
+        margin: 15px 0 0;
+      }
+      @media (min-width: 320px){
+        .toggle-header{
+          font-size: 14px;
+          padding: 10px 16px;
+          min-height: 0;
+          line-height: 20px;
+        }
+        .price-row p{
+          font-size: 14px;
+          line-height: 20px;
+        }
+        .mobile-view{
+          margin-bottom: 10px;
+        }
+        .room-index{
+          display: inline-block;
+        }
+      }
+
+      @media (min-width: 550px){
+
+        .header {
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+
+          height: 50px;
+          align-items: center;
+          line-height: 30px;
+          margin-bottom: 15px;
+        }
+        .header > div {
+          border-right: 1px solid var(--shade-superlight);
+          padding: 10px 24px;
+        }
+        hotel-room{
+          padding: 0;
+          margin-bottom: 15px;
+        }
+        hotel-room:last-of-type{
+          margin-bottom: 0;
+        }
+        .selection{
+          font-weight: 400;
+          font-size: 15px;
+          color: #000;
+        }
+
+        .selection span{
+          font-size: 14px;
+          color: var(--shade-semidark);
+        }
+
+        .collapse-content{
+          padding: 15px 24px;
+        }
+        .room-index{
+          display: inline-block;
+        }
+      }
+    </style>
+
+    <div class="toggle-header row-md" on-click="toggleCollapse">
+      <template is="dom-if" if="[[!_isRoomSelected(selected)]]">
+        <div class="flex selection" >
+          <div class="room-index">[[resources.room]] [[index]]:</div>
+          <span>[[resources.options]] for [[count]] [[resources.guests]]</span>
+        </div>
+      </template>
+      <template is="dom-if" if="[[_isRoomSelected(selected)]]">
+        <div class="flex selection">
+          <div>[[resources.room]] [[index]]: [[_getAmenities(roomTypes, selected)]] | [[count]] [[resources.guests]]</div>
+          <!-- <p>[[resources.options]]: [[_getAmenities(roomTypes, selected)]]</p> -->
+        </div>
+      </template>
+      <div class="row price-row">
+        <template is="dom-if" if="[[_isRoomSelected(selected)]]">
+          <p>[[resources.room]] [[index]] [[resources.total]]:</p>
+          <h3 class="price">[[resources.currency]][[_getTotalAmount(roomTypes, selected, nights )]]</h3>
+        </template>
+        <a class="not-mobile link-style" >[[resources.change]]</a>
+      </div>
+    </div>
+
+    <iron-collapse id="collapse" opened="{{ opened }}">
+      <div class="collapse-content">
+        <div class="header room-grid not-mobile">
+          <div class="first">
+            <h5>[[resources.roomType]]</h5>
+          </div>
+          <div class="second text-center">
+            <h5>[[resources.max]]</h5>
+          </div>
+          <div class="third ">
+            <h5>[[resources.options]]</h5>
+          </div>
+          <div class="fourth text-right">
+            <h5>[[resources.price]]</h5>
+          </div>
+          <div class="last text-right">
+            <h5>[[resources.total]]</h5>
+          </div>
+        </div>
+        <template is="dom-repeat" items="[[roomTypes]]" sort="_sortBy">
+          <hotel-room selected="[[_isSelected(index, selected)]]" index="[[index]]" on-selection-change="_selectionChanged" amenities="[[amenities]]" resources="[[resources]]" room="[[item]]"></hotel-room>
+        </template>
+        <!-- <a href="#" class="link&#45;style show&#45;more&#45;rooms row" role="button">SHOW MORE ROOMS</a> -->
+      </div>
+    </iron-collapse>
+
+  </template>
+  <script>
+    class RoomList extends Polymer.Element {
+
+      static get is() {
+        return 'room-list';
+      }
+
+      static get properties() {
+        return {
+          opened:{
+            type:Boolean,
+            value:false
+          },
+          index: {
+            type: Number,
+            value: 1
+          },
+          nights: {
+            type: Number,
+            value: 1
+          },
+          roomTypes: Array,
+          selected: {
+            type: Number,
+            value: 0,
+            observer: '_selectedChanged'
+          },
+          amenities: Array,
+          count: Number,
+          resources: Object
+        };
+      }
+
+      _getAmenities(roomTypes, selected){
+        const { roomViews, bedDetails } = roomTypes[selected];
+        if(roomViews && bedDetails){
+          return roomViews.join(' | ') + ' | ' + bedDetails.map( bed => `${bed.count} ${bed.desc}`).join(' | ');
+        }
+        return '';
+      }
+
+      toggleCollapse(e){
+        e.preventDefault();
+        var opened = false;
+        if(this.$.collapse.opened){
+          var opened = true;
+        }
+        const hotelDetails = document.querySelector('t-hotel-details');
+        const collapses =  hotelDetails.root.querySelectorAll('room-list');
+        collapses.forEach(item => item.root.querySelector('iron-collapse').hide());
+        if(opened){
+          this.$.collapse.hide();
+        }
+        else{
+          this.$.collapse.show();
+        }
+      }
+
+      _isRoomSelected(selected){
+        return selected >= 0;
+      }
+
+      _isSelected(index,selected){
+        return index === selected;
+      }
+
+      _selectionChanged(e){
+        const { selected } = e.detail;
+        this.set('selected', selected? e.model.index: -1);
+      }
+
+      _selectedChanged(e){
+        this.dispatchEvent(new CustomEvent('room-selection', {
+          detail: {
+            room: this.selected,
+            amount: this._getTotalAmount(this.roomTypes, this.selected, this.nights)
+          }
+        }));
+      }
+
+      _getLabel(opened){
+        return opened? this.resources.close: this.resources.change;
+      }
+
+      _sortBy(room1, room2){
+        const room1Cost = room1.roomRate.fare.totalFare - room1.roomRate.fare.totalDiscount;
+        const room2Cost = room2.roomRate.fare.totalFare - room2.roomRate.fare.totalDiscount;
+        return room1Cost > room2Cost;
+      }
+
+      _getTotalAmount(roomTypes, selected, nights){
+        const roomsSortedByPrice = roomTypes.sort(this._sortBy);
+        if(selected >= 0){
+          const roomType = roomsSortedByPrice[selected];
+          const fare = roomType.roomRate.fare;
+          const discountedFare = fare.totalFare - fare.totalDiscount;
+          return nights * discountedFare;
+        }
+        return '';
+      }
+
+    }
+window.customElements.define(RoomList.is, RoomList);
+  </script>
+</dom-module>

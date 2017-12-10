@@ -1,0 +1,268 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../font-roboto/roboto.html">
+<link rel="import" href="../iron-icons/communication-icons.html">
+<link rel="import" href="../iron-icons/social-icons.html">
+<link rel="import" href="../iron-icons/notification-icons.html">
+<link rel="import" href="star-rating.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../paper-tabs/paper-tab.html">
+<link rel="import" href="../paper-menu-button/paper-menu-button.html">
+<link rel="import" href="hotel-details-styles.html">
+
+
+<dom-module id="hotel-overview">
+  <template>
+    <custom-style>
+      <style include="hotel-details-styles">
+        :host{
+          --rating-icon-size: 20px;
+          --rating-icon-padding: 0px;
+          font-family: 'Roboto','Normal';
+          font-size: 15px;
+        }
+
+        iron-icon {
+          width: 20px;
+          height: 20px;
+          color: var(--shade-semidark, #b5b5b5);
+        }
+
+        a{
+          text-decoration: none;
+          speak-numeral: digits;
+        }
+
+        [icon="communication:location-on"] {
+          color: var(--link-color);
+        }
+
+        .right-container {
+          display: none;
+        }
+
+        @media (min-width: 550px) {
+          :host{
+            font-size: 14px;
+          }
+          .row-md {
+            @apply --layout-wrap;
+          }
+          .align-end {
+            @apply --layout-end;
+          }
+          .right-container {
+            display: block;
+          }
+          .left-container {
+            flex: 1 1 300px;
+          }
+          .row-justified {
+            @apply --layout-justified;
+          }
+          h2 {
+            margin-right: 20px;
+          }
+          .discount {
+            background: var(--app-red-color);
+            padding: 5px;
+            color: var(--discount-color, #fff);
+            border-radius: 2px;
+            line-height: 30px;
+          }
+          .originalPrice {
+            font-size: 16px;
+            text-decoration: line-through;
+          }
+          .bookPrice {
+            font-size: 24px;
+            line-height: 1.2;
+            color: var(--app-red-color);
+            font-weight: bold;
+          }
+        }
+        @media (min-width: 1024px){
+          h2{
+            font-size: 24px;
+            font-weight: 500;
+          }
+          p, a, dl, dt:not(.resource-label), dd {
+            font-size: 15px;
+          }
+        }
+
+        .header-row{
+          @apply --layout-start;
+        }
+
+        .icons-header {
+          height: 30px;
+          margin-left: 10px;
+        }
+
+        .paragraph-break{
+          max-width: 300px;
+        }
+        @media (min-width: 1024px) {
+          .paragraph-break{
+            max-width: 700px;
+          }
+        }
+        .icons-header paper-icon-button{
+          padding: 3px;
+          border-radius: 50%;
+          color: var(--shade-light);
+          width: 30px;
+          height: 30px;
+          margin: 0;
+        }
+
+        .icons-header .favorite[active=""] {
+          color: var(--app-red-color);
+        }
+
+        .header-menu-button {
+          padding: 0;
+          color: var(--shade-light);
+          margin-left: 5px;
+        }
+
+        .header-menu-button iron-icon{
+          margin-right: 5px;
+        }
+      </style>
+    </custom-style>
+    <div class="row row-justified">
+      <div class="left-container">
+        <div class="row header-row">
+          <div class="row-md margin-b">
+            <h2 class="margin-b">[[hotel.name]]</h2>
+            <star-rating icon="star"  rating="[[hotel.rating]]"></star-rating>
+          </div>
+
+          <template is="dom-if" if="[[!isLightHeader]]">
+            <div class="icons-header row flex">
+              <paper-icon-button  active ="{{hotel.isFavorite}}" on-click="_fireFavoriteActionEvent" class="favorite" icon="[[resources.favorite]]" toggles></paper-icon-button>
+              <paper-menu-button dynamic-align  on-iron-select="_shareOnPlatform"  class="header-menu-button">
+                <paper-icon-button icon="[[resources.share]]" slot="dropdown-trigger" alt="menu"></paper-icon-button>
+                <paper-listbox slot="dropdown-content">
+                  <template is="dom-repeat" items="[[hotel.sharingPlatforms]]">
+                    <paper-item label="[[item.value]]" >
+                      <iron-icon icon="[[item.icon]]"></iron-icon>
+                      [[item.label]]
+                    </paper-item>
+                  </template>
+                </paper-listbox>
+              </paper-menu-button>
+            </div>
+          </template>
+        </div>
+        <p class="paragraph-break margin-b">[[hotel.address]]</p>
+        <div class="row">
+          <template is="dom-if" if="[[!isLightHeader]]">
+            <a href="tel:[[hotel.phone]]" class="row margin-r">
+              <iron-icon icon="communication:call"></iron-icon>
+              <span class="margin-l">
+                [[hotel.phone]]
+              </span>
+            </a>
+            <template is="dom-if" if="[[ hotel.distance ]]">
+              <dl class="row">
+                <dt>[[resources.cityCenter]]:&nbsp;</dt>
+                <dd>[[hotel.distance]] [[resources.distanceUnit]]</dd>
+              </dl>
+            </template>
+            <a href="#" role="button" class="margin-l">
+              <iron-icon icon="communication:location-on" on-click="_fireMapClick"> </iron-icon>
+            </a>
+          </template>
+        </div>
+      </div>
+      <div class="right-container">
+        <div class="row  align-end">
+          <template is="dom-if" if="[[!isLightHeader]]">
+            <dl  class="row margin-r align-end">
+              <div>
+                <dt hidden>[[resources.discount]]</dt>
+                <dd class="margin-r-small" aria-label="[[resources.discount]]">
+                  <span class="discount">-[[hotel.price.discount]]</span>
+                </dd>
+              </div>
+              <div>
+                <dt aria-hidden="true" class="margin-b resource-label text-right">
+                  [[resources.price]]
+                </dt>
+                <dd class="row">
+                  <span aria-hidden="true" class="originalPrice margin-r-small">[[hotel.price.originalPrice]]</span>
+                  <span class="bookPrice">[[hotel.price.bookingPrice]]</span>
+                </dd>
+              </div>
+            </dl>
+          </template>
+          <paper-button raised class="primary-btn" on-click="_fireReserveEvent">[[resources.reserve]]</paper-button>
+        </div>
+      </div>
+    </div>
+  </template>
+  <script>
+
+    /**
+     * `hotel-overview`
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+
+  class HotelOverview extends Polymer.Element {
+    static get is() {
+      return 'hotel-overview';
+    }
+
+    static get properties() {
+      return {
+        resources: {
+          type: Object
+        },
+        isLightHeader: {
+          type: Boolean,
+          value: false
+        },
+        hotel: {
+          type: Object,
+          value: {}
+        }
+      };
+    }
+
+    _fireMapClick(e) {
+      e.preventDefault();
+      //TODO: fire event here
+      this.dispatchEvent(new CustomEvent('map-icon-tap'));
+    }
+
+    _fireReserveClick(e) {
+      this.dispatchEvent(new CustomEvent('reserve-tap'));
+    }
+
+    _shareOnPlatform(e, selection){
+      const value = selection.item.label;
+      this.dispatchEvent(new CustomEvent('share', {detail: {platform: value}}));
+    }
+
+    _fireFavoriteActionEvent(e){
+      this.dispatchEvent(new CustomEvent('favorite-tap', {detail: {isFavorited: this.hotel.isFavorited}}));
+    }
+
+    _fireReserveEvent(e){
+      this.dispatchEvent(new CustomEvent('reserve-tap', {detail: {isFavorited: this.hotel.isFavorited}}));
+    }
+  }
+
+window.customElements.define(HotelOverview.is, HotelOverview);
+  </script>
+</dom-module>

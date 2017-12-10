@@ -1,0 +1,72 @@
+<link rel="import" href="../paper-button/paper-button.html">
+<!--
+A comment describing this element
+
+Example:
+
+    <my-elem></my-elem>
+
+Example:
+
+    <my-elem>
+      <h2>Hello my-elem</h2>
+    </my-elem>
+
+@demo demo/index.html
+-->
+
+<dom-module id="hotel-details-research">
+	<template>
+		<style include="hotel-details-styles">
+			:host {
+				display: block;
+			}
+			.body{
+				@apply --layout-center;
+				@apply --layout-center-justified;
+
+				background: var(--shade-superlight);
+				padding: 20px;
+				text-align: center;
+			}
+			h4{
+				font-size: 18px;
+				line-height: 30px;
+				color: var(--shade-dark);
+			}
+			a{
+        cursor: pointer;
+				text-decoration: none;
+				color: var(--link-color);
+				line-height: 30px;
+				margin: 0 15px;
+			}
+		</style>
+		<div class="row-md body">
+			<h4>[[resources.heading]]</h4>
+			<a role="button" on-click="_triggerResearch">[[resources.description]]</a>
+		</div>
+		
+	</template>
+	<script>
+		class HotelDetailsResearch extends Polymer.Element {
+        static get is() {
+            return 'hotel-details-research';
+        }
+        static get properties() {
+            return {
+            	resources:Object
+
+
+            }
+        }
+
+        _triggerResearch(e){
+          debugger;
+        	this.dispatchEvent(new CustomEvent('research-tap'));
+        }
+    };
+
+    window.customElements.define(HotelDetailsResearch.is, HotelDetailsResearch);
+	</script>
+</dom-module>
