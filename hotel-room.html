@@ -565,7 +565,7 @@ Example:
         }
 
         _getText(count){
-          return count > 1 ? '1 room': `${count} rooms`;
+          return count === 1 ? '1 room': `${count} rooms`;
         }
 
         _findPriceDiscount(discount) {
