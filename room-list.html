@@ -35,6 +35,7 @@ Example:
         color: var(--shade-dark);
         line-height: 21px;
         font-size: 18px;
+        font-weight: 500;
         margin: 0 10px;
       }
       .price-row p {
@@ -92,18 +93,21 @@ Example:
       }
       @media (min-width: 320px){
         .toggle-header{
-          font-size: 14px;
+          font-size: 13px;
           padding: 10px 16px;
           min-height: 0;
           line-height: 20px;
         }
         .price-row p{
-          font-size: 14px;
+          font-size: 12px;
           line-height: 20px;
         }
         .mobile-view{
           margin-bottom: 10px;
         }
+      .link-style{
+        font-size: 13px;
+      }
         .room-index{
           display: inline-block;
         }
@@ -166,9 +170,9 @@ Example:
       <div class="row price-row">
         <template is="dom-if" if="[[_isRoomSelected(selected)]]">
           <p>[[resources.room]] [[index]] [[resources.total]]:</p>
-          <h3 class="price">[[resources.currency]][[_getTotalAmount(roomTypes, selected, nights )]]</h3>
+          <h3 class="price">[[roomTypes.0.roomRate.fare.currency]][[_getTotalAmount(roomTypes, selected, nights )]]</h3>
         </template>
-        <a class="not-mobile link-style" >[[resources.change]]</a>
+        <a class="link-style" >[[resources.change]]</a>
       </div>
     </div>
 
@@ -274,6 +278,7 @@ Example:
         this.dispatchEvent(new CustomEvent('room-selection', {
           detail: {
             room: this.selected,
+            currency: this.roomTypes[0].roomRate.fare.currency,
             amount: this._getTotalAmount(this.roomTypes, this.selected, this.nights)
           }
         }));

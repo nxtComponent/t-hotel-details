@@ -38,6 +38,9 @@ Example:
         font-weight: 400;
         margin: 0 auto;
       }
+      .mobile-view{
+        height: 200px;
+      }
 
       #hotelRoom {
         margin-top: 10px;
@@ -361,7 +364,7 @@ Example:
           },
 
           _calculatedCost: {
-            type: Number,
+            type: String,
             value: 0
           }
         }
@@ -405,15 +408,16 @@ Example:
       }
 
       _updatePrice(e){
-        const { room, amount } = e.detail;
+        const { room, amount, currency } = e.detail;
         if(!this._pricesArray){
           this._pricesArray = new Array(this.count);
         }
         this._pricesArray[e.model.index] = amount;
-        this._calculatedCost =  this._pricesArray.reduce((sum, price) => {
+        const cost = this._pricesArray.reduce((sum, price) => {
           sum = sum + price;
           return sum;
         },0);
+        this._calculatedCost= currency + cost;
       }
 
       _getGeocode(latlng){
