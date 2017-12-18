@@ -272,6 +272,7 @@ Example:
       _selectionChanged(e){
         const { selected } = e.detail;
         this.set('selected', selected? e.model.index: -1);
+          this.$.collapse.hide();
       }
 
       _selectedChanged(e){
